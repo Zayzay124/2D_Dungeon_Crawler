@@ -2,10 +2,12 @@ using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
+
 
 public class PlayerMovement : MonoBehaviour
 {
+    public Animator animator;
+
     [Header("Movement")]
     public Rigidbody2D rb;
     public float moveSpeed = 10.0f;
@@ -31,7 +33,6 @@ public class PlayerMovement : MonoBehaviour
     public Transform wallCheckPos;
     public Vector2 wallCheckSize = new Vector2(0.5f, 0.05f);
     public LayerMask wallLayer;
-    public float wallSlideSpeed = 2f;
 
     [Header("Flip")]
     bool isFacingRight = true;
@@ -39,11 +40,12 @@ public class PlayerMovement : MonoBehaviour
     [Header("WallSlide")]
     public float wallSlideMovement = 2f;
     bool isWallSliding = false;
+    public float wallSlideSpeed = 2f;
 
     [Header("WallJumping")]
     bool isWallJumping;
     float wallJumpDirection;
-    float wallJumpTime;
+    float wallJumpTime = 0.5f;
     float wallJumpTimer;
     public Vector2 wallJumpPower = new Vector2(5f, 10f);
 
@@ -59,6 +61,9 @@ public class PlayerMovement : MonoBehaviour
             rb.linearVelocity = new Vector2(horizontalMovement * moveSpeed, rb.linearVelocity.y);
             CheckFlip();
         }
+        animator.SetFloat("yVelocity", rb.linearVelocityY);
+        animator.SetFloat("magnitude", rb.linearVelocity.magnitude);
+        animator.SetBool("isWallSliding", isWallSliding);
     }
 
     public void PlayerMove(InputAction.CallbackContext context)
@@ -85,11 +90,13 @@ public class PlayerMovement : MonoBehaviour
             {
                 rb.linearVelocityY = jumpPower;
                 jumpsRemaining--;
+                animator.SetTrigger("jump");
             }
             else if (context.canceled)
             {
                 rb.linearVelocityY = rb.linearVelocityY * 0.5f;
                 jumpsRemaining--;
+                animator.SetTrigger("jump");
             }
         }
 
@@ -99,6 +106,7 @@ public class PlayerMovement : MonoBehaviour
             rb.linearVelocity = new Vector2(wallJumpDirection * wallJumpPower.x, wallJumpPower.y);
             wallJumpTimer = 0f;
             Invoke(nameof(CancelWallJump), wallJumpTime + 0.1f);
+            animator.SetTrigger("jump");
         }
 
         if(transform.localScale.x != wallJumpDirection)
@@ -114,7 +122,8 @@ public class PlayerMovement : MonoBehaviour
             wallJumpDirection = -transform.localScale.x;
             wallJumpTimer = wallJumpTime;
             CancelInvoke(nameof(CancelWallJump));
-        } else if(wallJumpTimer > 0f)
+        } 
+        else if(wallJumpTimer > 0f)
         {
             wallJumpTimer -= Time.deltaTime;
         }
