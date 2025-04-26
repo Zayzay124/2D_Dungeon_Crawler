@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -49,8 +50,21 @@ public class PlayerMovement : MonoBehaviour
     float wallJumpTimer;
     public Vector2 wallJumpPower = new Vector2(5f, 10f);
 
+    [Header("Dashing")]
+    public float dashSpeed = 20f;
+    public float dashDuration = 0.1f;
+    public float dashCooldown = 0.1f;
+    public bool isDashing = false;
+    public bool canDash = false;
+    TrailRenderer trailRenderer;
+
     private void Update()
     {
+        animator.SetFloat("yVelocity", rb.linearVelocityY);
+        animator.SetFloat("magnitude", rb.linearVelocity.magnitude);
+        animator.SetBool("isWallSliding", isWallSliding);
+
+        if (isDashing) { return; }
         GroundCheck();
         Gravity();
         WallSlide();
@@ -61,14 +75,48 @@ public class PlayerMovement : MonoBehaviour
             rb.linearVelocity = new Vector2(horizontalMovement * moveSpeed, rb.linearVelocity.y);
             CheckFlip();
         }
-        animator.SetFloat("yVelocity", rb.linearVelocityY);
-        animator.SetFloat("magnitude", rb.linearVelocity.magnitude);
-        animator.SetBool("isWallSliding", isWallSliding);
+    }
+
+    private void Start()
+    {
+        trailRenderer = GetComponent<TrailRenderer>();
     }
 
     public void PlayerMove(InputAction.CallbackContext context)
     {
+        //if (isDashing) { return; }
         horizontalMovement = context.ReadValue<Vector2>().x;
+    }
+
+    public void PlayerDash(InputAction.CallbackContext context)
+    {
+        if(context.performed && canDash)
+        {
+            StartCoroutine(DashCoroutine());
+        }
+    }
+
+    private IEnumerator DashCoroutine()
+    {
+        canDash = false;
+        isDashing = true;
+        trailRenderer.emitting = true;
+
+        float dashDirection = isFacingRight ? 1f : -1f;
+
+        //rb.linearVelocityX = dashDirection * dashSpeed;
+        rb.linearVelocity = new Vector2(dashDirection * dashSpeed, 0);
+
+        yield return new WaitForSeconds(dashDuration);
+
+        rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+
+        isDashing = false;
+        trailRenderer.emitting = false;
+
+        yield return new WaitForSeconds(dashCooldown);
+
+        canDash = true;
     }
 
     private void Gravity()
