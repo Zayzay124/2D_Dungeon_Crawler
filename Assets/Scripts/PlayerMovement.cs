@@ -228,6 +228,7 @@ public class PlayerMovement : MonoBehaviour
         if((isFacingRight && horizontalMovement < 0) || (!isFacingRight && horizontalMovement > 0))
         {
             FlipPlayer();
+            Debug.Log("happens");
         } 
     }
 
