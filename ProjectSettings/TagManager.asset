@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - EnemyHitbox
   layers:
   - Default
   - TransparentFX
@@ -12,12 +13,12 @@ TagManager:
   - Water
   - UI
   - Wall
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Enemy
+  - EnemyHitbox
+  - EnemyHurtbox
+  - PlayerHitbox
+  - PlayerHurtbox
   - 
   - 
   - 

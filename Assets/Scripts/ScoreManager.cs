@@ -25,7 +25,7 @@ public class ScoreManager : MonoBehaviour
         Gem.OnGemCollect += IncreaseProgressAmount;
     }
 
-    void IncreaseProgressAmount(int amount)
+    public void IncreaseProgressAmount(int amount)
     {
         progressAmount += amount;
         progressSlider.value = progressAmount;
@@ -34,5 +34,11 @@ public class ScoreManager : MonoBehaviour
         {
             Debug.Log("level complete");
         }
+    }
+    public void DecreaseProgressAmount(int amount)
+    {
+        progressAmount -= amount;
+        progressSlider.value = progressAmount;
+
     }
 }
