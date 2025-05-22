@@ -13,13 +13,16 @@ public class PlayerMovingState : PlayerBaseState
         CheckSwitchStates();
     }
 
-    public override void ExitState() { }
+    public override void ExitState()
+    {
+        Debug.Log("left move state");
+    }
 
     public override void InitializeSubState() { }
 
     public override void CheckSwitchStates()
     {
-        if (Ctx.Rb.linearVelocity.magnitude < 0.1)
+        if (!Ctx.IsMovePressed)
         {
             SwitchState(Factory.Idle());
         }

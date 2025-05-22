@@ -10,6 +10,7 @@ public class PlayerStateMachine : MonoBehaviour
     public Rigidbody2D rb;
     public float moveSpeed = 10.0f;
     private float horizontalMovement;
+    bool _isMovePressed;
 
     [Header("Jump")]
     bool _isJumpPressed;
@@ -64,6 +65,8 @@ public class PlayerStateMachine : MonoBehaviour
     //getter and setters
     public PlayerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
     public bool IsJumpPressed { get { return _isJumpPressed; }}
+    public bool IsMovePressed { get { return _isMovePressed; }}
+    
     public Animator Animator { get { return animator; }}
     public int JumpsRemaining { get { return _jumpsRemaining; } set { _jumpsRemaining = value; } }
     public float JumpPower { get { return jumpPower; }}
@@ -93,6 +96,7 @@ public class PlayerStateMachine : MonoBehaviour
     public void PlayerMove(InputAction.CallbackContext context)
     {
         horizontalMovement = context.ReadValue<Vector2>().x;
+        _isMovePressed = horizontalMovement < 0 || horizontalMovement > 0;
     }
 
     public void PlayerDash(InputAction.CallbackContext context)

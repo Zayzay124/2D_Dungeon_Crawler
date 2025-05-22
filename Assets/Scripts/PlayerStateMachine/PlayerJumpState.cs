@@ -9,7 +9,7 @@ public class PlayerJumpState : PlayerBaseState
     }
     public override void EnterState()
     {
-        Debug.Log("hello from jump state");
+        Debug.Log("entered jump state");
         Jump();
     }
 

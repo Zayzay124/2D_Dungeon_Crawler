@@ -10,7 +10,7 @@ public class PlayerGroundedState : PlayerBaseState
 
     public override void EnterState()
     {
-        Debug.Log("hello from grounded state");
+        Debug.Log("entered grounded state");
     }
 
     public override void UpdateState()
@@ -21,15 +21,16 @@ public class PlayerGroundedState : PlayerBaseState
     public override void ExitState()
     {
         Ctx.JumpsRemaining = Ctx.MaxJumps;
+        Debug.Log("left grounded state");
     }
 
     public override void InitializeSubState()
     {
         //*rb.magnitude is less than 0.1
-        if (Ctx.Rb.linearVelocity.magnitude < 0.1) {
+        if (!Ctx.IsMovePressed) {
             SetSubState(Factory.Idle());
         } //rb.magnitude is greater than 0.1
-        else if (Ctx.Rb.linearVelocity.magnitude > 0.1) {
+        else if (Ctx.IsMovePressed) {
             SetSubState(Factory.Move());
 /*        } else if () {
             SetSubState(_factory.Dash());*/
