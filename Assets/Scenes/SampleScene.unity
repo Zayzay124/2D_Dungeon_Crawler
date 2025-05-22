@@ -698,7 +698,7 @@ Transform:
   m_GameObject: {fileID: 764374641}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.55, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1628,6 +1628,7 @@ GameObject:
   - component: {fileID: 1318158608}
   - component: {fileID: 1318158610}
   - component: {fileID: 1318158611}
+  - component: {fileID: 1318158612}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1809,8 +1810,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1318158607}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+      - m_Target: {fileID: 1318158612}
+        m_TargetAssemblyTypeName: PlayerStateMachine, Assembly-CSharp
         m_MethodName: PlayerMove
         m_Mode: 0
         m_Arguments:
@@ -1865,8 +1866,8 @@ MonoBehaviour:
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1318158607}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+      - m_Target: {fileID: 1318158612}
+        m_TargetAssemblyTypeName: PlayerStateMachine, Assembly-CSharp
         m_MethodName: Jump
         m_Mode: 0
         m_Arguments:
@@ -1923,7 +1924,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1318158600}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: edb731aff5408e34b836a69fa2ab1557, type: 3}
   m_Name: 
@@ -2130,6 +2131,43 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &1318158612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1318158600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 787e9a958b992834bae67c6adf9e907a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1318158610}
+  rb: {fileID: 1318158604}
+  moveSpeed: 10
+  jumpPower: 5
+  groundCheckPos: {fileID: 764374642}
+  groundCheckSize: {x: 0.5, y: 0.05}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  baseGravity: 2
+  maxFallSpeed: 18
+  fallSpeedMultiplier: 2
+  wallCheckPos: {fileID: 374044722}
+  wallCheckSize: {x: 0.5, y: 0.05}
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  wallSlideMovement: 2
+  wallSlideSpeed: 2
+  wallJumpPower: {x: 5, y: 10}
+  dashSpeed: 20
+  dashDuration: 0.1
+  dashCooldown: 0.1
+  isDashing: 0
+  canDash: 0
 --- !u!1 &1336415550
 GameObject:
   m_ObjectHideFlags: 0
@@ -3448,6 +3486,10 @@ PrefabInstance:
     - target: {fileID: 5959291138786381279, guid: 57947f219a64afd4cb35a07353a098eb, type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 5959291138786381279, guid: 57947f219a64afd4cb35a07353a098eb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

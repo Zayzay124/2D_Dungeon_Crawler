@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -131,6 +130,7 @@ public class PlayerMovement : MonoBehaviour
             rb.gravityScale = baseGravity;
         }
     }
+
     public void Jump(InputAction.CallbackContext context)
     {
         if (jumpsRemaining > 0) {
@@ -181,6 +181,7 @@ public class PlayerMovement : MonoBehaviour
     {
         isWallJumping = false;
     }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.white;
